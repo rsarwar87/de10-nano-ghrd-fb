@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<system name="$${FILENAME}">
+ <component
+   name="$${FILENAME}"
+   displayName="$${FILENAME}"
+   version="1.0"
+   description=""
+   tags=""
+   categories="" />
+ <parameter name="bonusData"><![CDATA[bonusData 
+{
+   element alt_vip_itc_0
+   {
+      datum _sortIndex
+      {
+         value = "1";
+         type = "int";
+      }
+   }
+   element alt_vip_vfr_hdmi
+   {
+      datum _sortIndex
+      {
+         value = "0";
+         type = "int";
+      }
+   }
+}
+]]></parameter>
+ <parameter name="clockCrossingAdapter" value="HANDSHAKE" />
+ <parameter name="device" value="5CSEBA6U23I7" />
+ <parameter name="deviceFamily" value="Cyclone V" />
+ <parameter name="deviceSpeedGrade" value="7" />
+ <parameter name="fabricMode" value="QSYS" />
+ <parameter name="generateLegacySim" value="false" />
+ <parameter name="generationId" value="0" />
+ <parameter name="globalResetBus" value="false" />
+ <parameter name="hdlLanguage" value="VERILOG" />
+ <parameter name="hideFromIPCatalog" value="false" />
+ <parameter name="lockedInterfaceDefinition" value="" />
+ <parameter name="maxAdditionalLatency" value="1" />
+ <parameter name="projectName" value="" />
+ <parameter name="sopcBorderPoints" value="false" />
+ <parameter name="systemHash" value="0" />
+ <parameter name="testBenchDutName" value="" />
+ <parameter name="timeStamp" value="0" />
+ <parameter name="useTestBenchNamingPattern" value="false" />
+ <instanceScript></instanceScript>
+ <interface
+   name="alt_vip_itc_0_clocked_video"
+   internal="alt_vip_itc_0.clocked_video"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="alt_vip_itc_0_is_clk_rst"
+   internal="alt_vip_itc_0.is_clk_rst"
+   type="clock"
+   dir="end" />
+ <interface
+   name="alt_vip_itc_0_is_clk_rst_reset"
+   internal="alt_vip_itc_0.is_clk_rst_reset"
+   type="reset"
+   dir="end" />
+ <interface
+   name="alt_vip_vfr_hdmi_avalon_master"
+   internal="alt_vip_vfr_hdmi.avalon_master"
+   type="avalon"
+   dir="start" />
+ <interface
+   name="alt_vip_vfr_hdmi_avalon_slave"
+   internal="alt_vip_vfr_hdmi.avalon_slave"
+   type="avalon"
+   dir="end" />
+ <interface
+   name="alt_vip_vfr_hdmi_clock_master"
+   internal="alt_vip_vfr_hdmi.clock_master"
+   type="clock"
+   dir="end" />
+ <interface
+   name="alt_vip_vfr_hdmi_clock_master_reset"
+   internal="alt_vip_vfr_hdmi.clock_master_reset"
+   type="reset"
+   dir="end" />
+ <interface
+   name="alt_vip_vfr_hdmi_clock_reset"
+   internal="alt_vip_vfr_hdmi.clock_reset"
+   type="clock"
+   dir="end" />
+ <interface
+   name="alt_vip_vfr_hdmi_clock_reset_reset"
+   internal="alt_vip_vfr_hdmi.clock_reset_reset"
+   type="reset"
+   dir="end" />
+ <interface
+   name="alt_vip_vfr_hdmi_interrupt_sender"
+   internal="alt_vip_vfr_hdmi.interrupt_sender"
+   type="interrupt"
+   dir="end" />
+ <module name="alt_vip_itc_0" kind="alt_vip_itc" version="14.0" enabled="1">
+  <parameter name="ACCEPT_COLOURS_IN_SEQ" value="0" />
+  <parameter name="ANC_LINE" value="0" />
+  <parameter name="AP_LINE" value="0" />
+  <parameter name="BPS" value="8" />
+  <parameter name="CLOCKS_ARE_SAME" value="0" />
+  <parameter name="COLOUR_PLANES_ARE_IN_PARALLEL" value="1" />
+  <parameter name="FAMILY" value="Cyclone V" />
+  <parameter name="FIELD0_ANC_LINE" value="0" />
+  <parameter name="FIELD0_V_BACK_PORCH" value="0" />
+  <parameter name="FIELD0_V_BLANK" value="0" />
+  <parameter name="FIELD0_V_FRONT_PORCH" value="0" />
+  <parameter name="FIELD0_V_RISING_EDGE" value="0" />
+  <parameter name="FIELD0_V_SYNC_LENGTH" value="0" />
+  <parameter name="FIFO_DEPTH" value="1920" />
+  <parameter name="F_FALLING_EDGE" value="0" />
+  <parameter name="F_RISING_EDGE" value="0" />
+  <parameter name="GENERATE_SYNC" value="0" />
+  <parameter name="H_ACTIVE_PIXELS" value="1024" />
+  <parameter name="H_BACK_PORCH" value="160" />
+  <parameter name="H_BLANK" value="0" />
+  <parameter name="H_FRONT_PORCH" value="24" />
+  <parameter name="H_SYNC_LENGTH" value="136" />
+  <parameter name="INTERLACED" value="0" />
+  <parameter name="NO_OF_MODES" value="1" />
+  <parameter name="NUMBER_OF_COLOUR_PLANES" value="4" />
+  <parameter name="STD_WIDTH" value="1" />
+  <parameter name="THRESHOLD" value="1919" />
+  <parameter name="USE_CONTROL" value="0" />
+  <parameter name="USE_EMBEDDED_SYNCS" value="0" />
+  <parameter name="V_ACTIVE_LINES" value="768" />
+  <parameter name="V_BACK_PORCH" value="29" />
+  <parameter name="V_BLANK" value="0" />
+  <parameter name="V_FRONT_PORCH" value="3" />
+  <parameter name="V_SYNC_LENGTH" value="6" />
+ </module>
+ <module name="alt_vip_vfr_hdmi" kind="alt_vip_vfr" version="14.0" enabled="1">
+  <parameter name="AUTO_CLOCK_MASTER_CLOCK_RATE" value="-1" />
+  <parameter name="AUTO_CLOCK_RESET_CLOCK_RATE" value="-1" />
+  <parameter name="BITS_PER_PIXEL_PER_COLOR_PLANE" value="8" />
+  <parameter name="CLOCKS_ARE_SEPARATE" value="1" />
+  <parameter name="FAMILY" value="Cyclone V" />
+  <parameter name="MAX_IMAGE_HEIGHT" value="768" />
+  <parameter name="MAX_IMAGE_WIDTH" value="1024" />
+  <parameter name="MEM_PORT_WIDTH" value="128" />
+  <parameter name="NUMBER_OF_CHANNELS_IN_PARALLEL" value="4" />
+  <parameter name="NUMBER_OF_CHANNELS_IN_SEQUENCE" value="1" />
+  <parameter name="RMASTER_BURST_TARGET" value="32" />
+  <parameter name="RMASTER_FIFO_DEPTH" value="64" />
+ </module>
+ <connection
+   kind="avalon_streaming"
+   version="18.1"
+   start="alt_vip_vfr_hdmi.avalon_streaming_source"
+   end="alt_vip_itc_0.din" />
+ <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
+ <interconnectRequirement for="$system" name="qsys_mm.enableEccProtection" value="FALSE" />
+ <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />
+ <interconnectRequirement for="$system" name="qsys_mm.maxAdditionalLatency" value="1" />
+</system>
