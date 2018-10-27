@@ -11,5 +11,7 @@ Examples realized:
 3. HPS RAM -> mSGDMA -> mSGDMA -> HPS RAM [Not tested yet]
 
 ref: https://support.criticallink.com/redmine/projects/mityarm-5cs/wiki/writing_to_hps_memory
+
 ref: https://fpgawiki.intel.com/wiki/File:Modular_SGDMA_DE.zip
+
 ref: https://github.com/rsarwar87/soc-workshop/tree/master/WS1-IntroToSoC/software/Linux_fft_app
