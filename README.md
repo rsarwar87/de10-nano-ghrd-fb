@@ -10,3 +10,6 @@ Examples realized:
 2. HPS RAM (0x3600_0000) -> Read master -> mSGDMA Dispatcher -> mSGDMA Dispatcher -> Write Master -> HPS_RAM (0x3700_0000) [Problem with mm2s interface]
 3. HPS RAM -> mSGDMA -> mSGDMA -> HPS RAM [Not tested yet]
 
+ref: https://support.criticallink.com/redmine/projects/mityarm-5cs/wiki/writing_to_hps_memory
+ref: https://fpgawiki.intel.com/wiki/File:Modular_SGDMA_DE.zip
+ref: https://github.com/rsarwar87/soc-workshop/tree/master/WS1-IntroToSoC/software/Linux_fft_app
