@@ -26,12 +26,12 @@
 #define S2R_mSGDMA_DESC_BASEADDR 0xFF2a4000
 #define HPS_MEM_mSGDMA_RECADDR 0x37000000
 
-#define S2R_DISPATCHER_CSR_BASEADDR 0xFF2a5000
-#define S2R_DISPATCHER_DESC_BASEADDR 0xFF2a6000
+#define S2R_DISPATCHER_CSR_BASEADDR 0xFF2a1000
+#define S2R_DISPATCHER_DESC_BASEADDR 0xFF2a2000
 #define S2R_DISPATCHER_RESP_BASEADDR 0xFF2a6000
 #define HPS_MEM_DISP_RECADDR 0x3A000000
-#define R2S_DISPATCHER_CSR_BASEADDR 0xFF2a5000
-#define R2S_DISPATCHER_DESC_BASEADDR 0xFF2a6000
+#define R2S_DISPATCHER_CSR_BASEADDR 0xFF2a3000
+#define R2S_DISPATCHER_DESC_BASEADDR 0xFF2a4000
 #define R2S_DISPATCHER_RESP_BASEADDR 0xFF2a6000
 #define HPS_MEM_DISP_RECADDR 0x3B000000
 
@@ -72,10 +72,10 @@ int TestBridge()
 #define HPS_MEM_mSGDMA_RECADDR 0x37000000
 */
 		printf("\n\nCreating bridge control --  : ");
-		tcSGDMADispatcher ram2stream(R2S_mSGDMA_CSR_BASEADDR,
-									 R2S_mSGDMA_DESC_BASEADDR, 0);
-		tcSGDMADispatcher stream2ram(S2R_mSGDMA_CSR_BASEADDR,
-									 S2R_mSGDMA_DESC_BASEADDR, 0);
+		tcSGDMADispatcher ram2stream(R2S_DISPATCHER_CSR_BASEADDR,
+				R2S_DISPATCHER_DESC_BASEADDR , 0);
+		tcSGDMADispatcher stream2ram(S2R_DISPATCHER_CSR_BASEADDR,
+				S2R_DISPATCHER_DESC_BASEADDR, 0);
 		printf("DONE\n");
 
 		// Create send descriptor
@@ -105,8 +105,8 @@ int TestBridge()
 
 		printf("Starting Descriptor, write starts from %x addr to %x addr\n\t\t ",
 								HPS_MEM_mSGDMA_SENADDR, HPS_MEM_mSGDMA_RECADDR);
-		ram2stream.WriteDescriptor(descriptor_sr);
-		stream2ram.WriteDescriptor(descriptor_rs);
+		ram2stream.WriteDescriptor(descriptor_rs);
+		stream2ram.WriteDescriptor(descriptor_sr);
 		tuSgdmaStatus ret1 = ram2stream.GetStatusReg();
 		tuSgdmaStatus ret2 = stream2ram.GetStatusReg();
 		printf("DONE r2s status=%x s2r status=%x\n", ret1.msBits, ret2.msBits);
