@@ -13,6 +13,12 @@ module soc_system (
 	clk_clk,
 	clk_130_clk,
 	dipsw_pio_external_connection_export,
+	dma_write_master_1_data_sink_data,
+	dma_write_master_1_data_sink_valid,
+	dma_write_master_1_data_sink_ready,
+	dma_write_master_1_data_sink_startofpacket,
+	dma_write_master_1_data_sink_endofpacket,
+	dma_write_master_1_data_sink_empty,
 	hps_0_f2h_cold_reset_req_reset_n,
 	hps_0_f2h_debug_reset_req_reset_n,
 	hps_0_f2h_stm_hw_events_stm_hwevents,
@@ -98,6 +104,12 @@ module soc_system (
 	input		clk_clk;
 	input		clk_130_clk;
 	input	[3:0]	dipsw_pio_external_connection_export;
+	input	[255:0]	dma_write_master_1_data_sink_data;
+	input		dma_write_master_1_data_sink_valid;
+	output		dma_write_master_1_data_sink_ready;
+	input		dma_write_master_1_data_sink_startofpacket;
+	input		dma_write_master_1_data_sink_endofpacket;
+	input	[4:0]	dma_write_master_1_data_sink_empty;
 	input		hps_0_f2h_cold_reset_req_reset_n;
 	input		hps_0_f2h_debug_reset_req_reset_n;
 	input	[27:0]	hps_0_f2h_stm_hw_events_stm_hwevents;

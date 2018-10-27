@@ -128,7 +128,7 @@ architecture rtl of DE10_TOP is
     );
   end component I2C_HDMI_Config;
  
-  component soc_system is
+    component soc_system is
         port (
             alt_vip_itc_0_clocked_video_vid_clk       : in    std_logic                     := 'X';             -- vid_clk
             alt_vip_itc_0_clocked_video_vid_data      : out   std_logic_vector(31 downto 0);                    -- vid_data
@@ -213,9 +213,16 @@ architecture rtl of DE10_TOP is
             memory_mem_odt                            : out   std_logic;                                        -- mem_odt
             memory_mem_dm                             : out   std_logic_vector(3 downto 0);                     -- mem_dm
             memory_oct_rzqin                          : in    std_logic                     := 'X';             -- oct_rzqin
-            reset_reset_n                             : in    std_logic                     := 'X'              -- reset_n
+            reset_reset_n                             : in    std_logic                     := 'X';             -- reset_n
+            dma_write_master_1_data_sink_data         : in    std_logic_vector(255 downto 0) := (others => 'X'); -- data
+            dma_write_master_1_data_sink_valid        : in    std_logic                     := 'X';             -- valid
+            dma_write_master_1_data_sink_ready        : out   std_logic;                                         -- ready
+				dma_write_master_1_data_sink_startofpacket : in    std_logic                     := 'X';             -- startofpacket
+            dma_write_master_1_data_sink_endofpacket   : in    std_logic                     := 'X';             -- endofpacket
+            dma_write_master_1_data_sink_empty         : in    std_logic_vector(4 downto 0)  := (others => 'X')  -- empty
+
         );
-  end component soc_system;
+    end component soc_system;
 
 
 
@@ -239,9 +246,29 @@ architecture rtl of DE10_TOP is
 	hps_debug_reset : out std_logic
     );
   end component hps_reset0;
-
+component st_cnt_src is
+	generic (
+		PKT_SIZE : integer                       := 1024
+	);
+	port (
+		clk            : in  std_logic                     := '0'; -- clock.clk
+		reset          : in  std_logic                     := '0'; -- reset.reset
+		aso_out0_data  : out std_logic_vector(63 downto 0);        --  out0.data
+		aso_out0_ready : in  std_logic                     := '0'; --      .ready
+		aso_out0_valid : out std_logic;                            --      .valid
+		aso_out0_sop   : out std_logic;                            --      .startofpacket
+		aso_out0_eop   : out std_logic                             --      .endofpacket
+	);
+end component;
+signal aso_out0_data  : std_logic_vector(255 downto 0);        --  out0.data
+signal aso_out0_ready : std_logic                     := '0'; --      .ready
+signal aso_out0_valid : std_logic;                            --      .valid
+signal aso_out0_sop   : std_logic;                            --      .startofpacket
+signal aso_out0_eop   : std_logic;   
 begin
-    LED(7 downto 1) <= fpga_led_internal;
+    LED(7 downto 3) <= aso_out0_data(6 downto 2);
+	 LED(1) <= aso_out0_valid;
+	 LED(2) <= aso_out0_ready;
     fpga_clk_50 <= FPGA_CLK1_50;
     stm_hw_events(12 downto 0) <= SW & fpga_led_internal & fpga_debounced_buttons;
 
@@ -295,8 +322,8 @@ begin
         reset_reset_n                             => hps_fpga_reset_n,     
 				
 	-- I/O
-	button_pio_external_connection_export     => fpga_debounced_buttons,     -- button_pio_external_connection.export
-	led_pio_external_connection_export        => fpga_led_internal,          --    led_pio_external_connection.export
+			button_pio_external_connection_export     => fpga_debounced_buttons,     -- button_pio_external_connection.export
+			led_pio_external_connection_export        => fpga_led_internal,          --    led_pio_external_connection.export
         dipsw_pio_external_connection_export      => SW, 
 				
 	-- ethernet
@@ -316,7 +343,7 @@ begin
         hps_0_hps_io_hps_io_emac1_inst_RXD3       => HPS_ENET_RX_DATA(3),  --                               .hps_io_emac1_inst_RXD3
    
 	-- sdi
-	hps_0_hps_io_hps_io_sdio_inst_CMD         => HPS_SD_CMD,         --                               .hps_io_sdio_inst_CMD
+			hps_0_hps_io_hps_io_sdio_inst_CMD         => HPS_SD_CMD,         --                               .hps_io_sdio_inst_CMD
         hps_0_hps_io_hps_io_sdio_inst_D0          => HPS_SD_DATA(0),     --                               .hps_io_sdio_inst_D0
         hps_0_hps_io_hps_io_sdio_inst_D1          => HPS_SD_DATA(1),     --                               .hps_io_sdio_inst_D1
         hps_0_hps_io_hps_io_sdio_inst_CLK         => HPS_SD_CLK,         --                               .hps_io_sdio_inst_CLK
@@ -377,9 +404,26 @@ begin
         memory_mem_dqs_n                          => HPS_DDR3_DQS_N,     --                               .mem_dqs_n
         memory_mem_odt                            => HPS_DDR3_ODT,       --                               .mem_odt
         memory_mem_dm                             => HPS_DDR3_DM,        --                               .mem_dm
-        memory_oct_rzqin                          => HPS_DDR3_RZQ        --                          reset.reset_n
-    );
-		  
+        memory_oct_rzqin                          => HPS_DDR3_RZQ,        --                          reset.reset_n
+        dma_write_master_1_data_sink_data         => aso_out0_data,         --   dma_write_master_1_data_sink.data
+        dma_write_master_1_data_sink_valid        => aso_out0_valid,     --                               .valid
+        dma_write_master_1_data_sink_ready        => aso_out0_ready,       --                               .ready
+		  dma_write_master_1_data_sink_startofpacket => aso_out0_sop, --                               .startofpacket
+        dma_write_master_1_data_sink_endofpacket   => aso_out0_eop,   --                               .endofpacket
+        dma_write_master_1_data_sink_empty         => open          --                               .empty
+	 );
+	 
+st_cnt: st_cnt_src
+	port map (
+		clk            => FPGA_CLK1_50,
+		reset          => '0',
+		aso_out0_data  => aso_out0_data(63 downto 0),
+		aso_out0_ready => aso_out0_ready,
+		aso_out0_valid => aso_out0_valid,
+		aso_out0_sop   => aso_out0_sop,
+		aso_out0_eop   => aso_out0_eop
+	);
+	
     vga_pll_i : vga_pll 
     port map (
         refclk  => fpga_clk_50,         --  refclk.clk

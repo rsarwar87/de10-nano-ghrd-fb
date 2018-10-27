@@ -30,7 +30,7 @@ use IEEE.numeric_std.all;
 
 entity st_cnt_src is
 	generic (
-		PKT_SIZE : integer                       := 0
+		PKT_SIZE : integer                       := 1024
 	);
 	port (
 		clk            : in  std_logic                     := '0'; -- clock.clk

@@ -1,0 +1,7 @@
+fatload mmc 0:1 $fpgadata output_files/soc_system.rbf;
+fpga load 0 $fpgadata $filesize;
+setenv fdtimage soc_system.dtb;
+run bridge_enable_handoff;
+setenv mmcboot 'setenv bootargs console=ttyS0,115200 root=${mmcroot} rw rootwait mem=900M; bootz ${loadaddr} - ${fdtaddr}';
+run mmcload;
+run mmcboot;

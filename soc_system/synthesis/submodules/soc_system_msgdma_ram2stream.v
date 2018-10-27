@@ -24,15 +24,16 @@ module soc_system_msgdma_ram2stream (
 		input  wire [2:0]   csr_address,                  //                 .address
 		input  wire         descriptor_slave_write,       // descriptor_slave.write
 		output wire         descriptor_slave_waitrequest, //                 .waitrequest
-		input  wire [255:0] descriptor_slave_writedata,   //                 .writedata
-		input  wire [31:0]  descriptor_slave_byteenable,  //                 .byteenable
+		input  wire [127:0] descriptor_slave_writedata,   //                 .writedata
+		input  wire [15:0]  descriptor_slave_byteenable,  //                 .byteenable
 		output wire         csr_irq_irq,                  //          csr_irq.irq
 		output wire [255:0] st_source_data,               //        st_source.data
 		output wire         st_source_valid,              //                 .valid
 		input  wire         st_source_ready,              //                 .ready
 		output wire         st_source_startofpacket,      //                 .startofpacket
 		output wire         st_source_endofpacket,        //                 .endofpacket
-		output wire [4:0]   st_source_empty               //                 .empty
+		output wire [4:0]   st_source_empty,              //                 .empty
+		output wire [1:0]   st_source_error               //                 .error
 	);
 
 	wire          dispatcher_internal_read_command_source_valid; // dispatcher_internal:src_read_master_valid -> read_mstr_internal:snk_command_valid
@@ -47,9 +48,9 @@ module soc_system_msgdma_ram2stream (
 		.RESPONSE_PORT               (2),
 		.DESCRIPTOR_INTERFACE        (0),
 		.DESCRIPTOR_FIFO_DEPTH       (128),
-		.ENHANCED_FEATURES           (1),
-		.DESCRIPTOR_WIDTH            (256),
-		.DESCRIPTOR_BYTEENABLE_WIDTH (32)
+		.ENHANCED_FEATURES           (0),
+		.DESCRIPTOR_WIDTH            (128),
+		.DESCRIPTOR_BYTEENABLE_WIDTH (16)
 	) dispatcher_internal (
 		.clk                     (clock_clk),                                                                                                                                                                                                                                                             //               clock.clk
 		.reset                   (~reset_n_reset_n),                                                                                                                                                                                                                                                      //         clock_reset.reset
@@ -73,7 +74,7 @@ module soc_system_msgdma_ram2stream (
 		.src_response_data       (),                                                                                                                                                                                                                                                                      //         (terminated)
 		.src_response_valid      (),                                                                                                                                                                                                                                                                      //         (terminated)
 		.src_response_ready      (1'b0),                                                                                                                                                                                                                                                                  //         (terminated)
-		.snk_descriptor_data     (256'b0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000), //         (terminated)
+		.snk_descriptor_data     (128'b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000),                                                                                                                                 //         (terminated)
 		.snk_descriptor_valid    (1'b0),                                                                                                                                                                                                                                                                  //         (terminated)
 		.snk_descriptor_ready    (),                                                                                                                                                                                                                                                                      //         (terminated)
 		.mm_response_waitrequest (),                                                                                                                                                                                                                                                                      //         (terminated)
@@ -96,8 +97,8 @@ module soc_system_msgdma_ram2stream (
 		.STRIDE_ENABLE             (0),
 		.BURST_ENABLE              (1),
 		.PACKET_ENABLE             (1),
-		.ERROR_ENABLE              (0),
-		.ERROR_WIDTH               (8),
+		.ERROR_ENABLE              (1),
+		.ERROR_WIDTH               (2),
 		.CHANNEL_ENABLE            (0),
 		.CHANNEL_WIDTH             (8),
 		.BYTE_ENABLE_WIDTH         (32),
@@ -131,13 +132,13 @@ module soc_system_msgdma_ram2stream (
 		.src_sop              (st_source_startofpacket),                       //                 .startofpacket
 		.src_eop              (st_source_endofpacket),                         //                 .endofpacket
 		.src_empty            (st_source_empty),                               //                 .empty
+		.src_error            (st_source_error),                               //                 .error
 		.snk_command_data     (dispatcher_internal_read_command_source_data),  //     Command_Sink.data
 		.snk_command_valid    (dispatcher_internal_read_command_source_valid), //                 .valid
 		.snk_command_ready    (dispatcher_internal_read_command_source_ready), //                 .ready
 		.src_response_data    (read_mstr_internal_response_source_data),       //  Response_Source.data
 		.src_response_valid   (read_mstr_internal_response_source_valid),      //                 .valid
 		.src_response_ready   (read_mstr_internal_response_source_ready),      //                 .ready
-		.src_error            (),                                              //      (terminated)
 		.src_channel          ()                                               //      (terminated)
 	);
 

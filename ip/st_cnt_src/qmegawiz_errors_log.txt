@@ -1,0 +1,6 @@
+
+
+/wsfat/terasic/systemCD/Demonstrations/SoC_FPGA/DE10_NANO_SoC_FB/ip/vga_pll.vhd
+
+Oct 27 11AM:35:26>: Megafunction PLL Intel FPGA IP v18.1 is not listed in any 
+wizard.lst file in the specified library path(s).Wizard launch aborted
