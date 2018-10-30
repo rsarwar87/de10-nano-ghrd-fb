@@ -140,8 +140,8 @@ Warning: soc_system.vip_subsystem.alt_vip_vfr_hdmi: The module properties SIMULA
 Warning: soc_system.vip_subsystem: Interrupt sender vip_subsystem.alt_vip_vfr_hdmi_interrupt_sender is not connected to an interrupt receiver
 Info: soc_system: Generating soc_system "soc_system" for QUARTUS_SYNTH
 Info: Interconnect is inserted between master hps_0.h2f_lw_axi_master and slave mm_bridge_0.s0 because the master is of type axi and the slave is of type avalon.
-Info: Inserting clock-crossing logic between cmd_demux.src6 and cmd_mux_006.sink0
-Info: Inserting clock-crossing logic between rsp_demux_006.src0 and rsp_mux.sink6
+Info: Inserting clock-crossing logic between cmd_demux.src7 and cmd_mux_007.sink0
+Info: Inserting clock-crossing logic between rsp_demux_007.src0 and rsp_mux.sink7
 Info: Interconnect is inserted between master mm_bridge_sdram.m0 and slave hps_0.f2h_sdram0_data because the master has burstcount signal 1 bit wide, but the slave is 8 bit wide.
 Info: Interconnect is inserted between master mm_bridge_sdram.m0 and slave hps_0.f2h_sdram0_data because the master has address signal 32 bit wide, but the slave is 27 bit wide.
 Info: Interconnect is inserted between master mm_bridge_sdram.m0 and slave hps_0.f2h_sdram0_data because the master has debugaccess signal 1 bit wide, but the slave is 0 bit wide.
@@ -151,11 +151,11 @@ Warning: hps_0.f2h_irq1: Cannot connect clock for irq_mapper_002.sender
 Warning: hps_0.f2h_irq1: Cannot connect reset for irq_mapper_002.sender
 Info: ILC: "soc_system" instantiated interrupt_latency_counter "ILC"
 Info: button_pio: Starting RTL generation for module 'soc_system_button_pio'
-Info: button_pio:   Generation command is [exec /wsfat/altera_2018.1/quartus/linux64/perl/bin/perl -I /wsfat/altera_2018.1/quartus/linux64/perl/lib -I /wsfat/altera_2018.1/quartus/sopc_builder/bin/europa -I /wsfat/altera_2018.1/quartus/sopc_builder/bin/perl_lib -I /wsfat/altera_2018.1/quartus/sopc_builder/bin -I /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/common -I /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=soc_system_button_pio --dir=/tmp/alt7831_6064169855587249320.dir/0003_button_pio_gen/ --quartus_dir=/wsfat/altera_2018.1/quartus --verilog --config=/tmp/alt7831_6064169855587249320.dir/0003_button_pio_gen//soc_system_button_pio_component_configuration.pl  --do_build_sim=0  ]
+Info: button_pio:   Generation command is [exec /wsfat/altera_2018.1/quartus/linux64/perl/bin/perl -I /wsfat/altera_2018.1/quartus/linux64/perl/lib -I /wsfat/altera_2018.1/quartus/sopc_builder/bin/europa -I /wsfat/altera_2018.1/quartus/sopc_builder/bin/perl_lib -I /wsfat/altera_2018.1/quartus/sopc_builder/bin -I /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/common -I /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=soc_system_button_pio --dir=/tmp/alt7834_2396238467859356514.dir/0003_button_pio_gen/ --quartus_dir=/wsfat/altera_2018.1/quartus --verilog --config=/tmp/alt7834_2396238467859356514.dir/0003_button_pio_gen//soc_system_button_pio_component_configuration.pl  --do_build_sim=0  ]
 Info: button_pio: Done RTL generation for module 'soc_system_button_pio'
 Info: button_pio: "soc_system" instantiated altera_avalon_pio "button_pio"
 Info: dipsw_pio: Starting RTL generation for module 'soc_system_dipsw_pio'
-Info: dipsw_pio:   Generation command is [exec /wsfat/altera_2018.1/quartus/linux64/perl/bin/perl -I /wsfat/altera_2018.1/quartus/linux64/perl/lib -I /wsfat/altera_2018.1/quartus/sopc_builder/bin/europa -I /wsfat/altera_2018.1/quartus/sopc_builder/bin/perl_lib -I /wsfat/altera_2018.1/quartus/sopc_builder/bin -I /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/common -I /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=soc_system_dipsw_pio --dir=/tmp/alt7831_6064169855587249320.dir/0004_dipsw_pio_gen/ --quartus_dir=/wsfat/altera_2018.1/quartus --verilog --config=/tmp/alt7831_6064169855587249320.dir/0004_dipsw_pio_gen//soc_system_dipsw_pio_component_configuration.pl  --do_build_sim=0  ]
+Info: dipsw_pio:   Generation command is [exec /wsfat/altera_2018.1/quartus/linux64/perl/bin/perl -I /wsfat/altera_2018.1/quartus/linux64/perl/lib -I /wsfat/altera_2018.1/quartus/sopc_builder/bin/europa -I /wsfat/altera_2018.1/quartus/sopc_builder/bin/perl_lib -I /wsfat/altera_2018.1/quartus/sopc_builder/bin -I /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/common -I /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=soc_system_dipsw_pio --dir=/tmp/alt7834_2396238467859356514.dir/0004_dipsw_pio_gen/ --quartus_dir=/wsfat/altera_2018.1/quartus --verilog --config=/tmp/alt7834_2396238467859356514.dir/0004_dipsw_pio_gen//soc_system_dipsw_pio_component_configuration.pl  --do_build_sim=0  ]
 Info: dipsw_pio: Done RTL generation for module 'soc_system_dipsw_pio'
 Info: dipsw_pio: "soc_system" instantiated altera_avalon_pio "dipsw_pio"
 Info: dma_read_master_0: "soc_system" instantiated dma_read_master "dma_read_master_0"
@@ -166,11 +166,11 @@ Info: hps_0: HPS Main PLL counter settings: n = 0  m = 63
 Info: hps_0: HPS peripherial PLL counter settings: n = 0  m = 39
 Info: hps_0: "soc_system" instantiated altera_hps "hps_0"
 Info: jtag_uart: Starting RTL generation for module 'soc_system_jtag_uart'
-Info: jtag_uart:   Generation command is [exec /wsfat/altera_2018.1/quartus/linux64/perl/bin/perl -I /wsfat/altera_2018.1/quartus/linux64/perl/lib -I /wsfat/altera_2018.1/quartus/sopc_builder/bin/europa -I /wsfat/altera_2018.1/quartus/sopc_builder/bin/perl_lib -I /wsfat/altera_2018.1/quartus/sopc_builder/bin -I /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/common -I /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart -- /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart/generate_rtl.pl --name=soc_system_jtag_uart --dir=/tmp/alt7831_6064169855587249320.dir/0007_jtag_uart_gen/ --quartus_dir=/wsfat/altera_2018.1/quartus --verilog --config=/tmp/alt7831_6064169855587249320.dir/0007_jtag_uart_gen//soc_system_jtag_uart_component_configuration.pl  --do_build_sim=0  ]
+Info: jtag_uart:   Generation command is [exec /wsfat/altera_2018.1/quartus/linux64/perl/bin/perl -I /wsfat/altera_2018.1/quartus/linux64/perl/lib -I /wsfat/altera_2018.1/quartus/sopc_builder/bin/europa -I /wsfat/altera_2018.1/quartus/sopc_builder/bin/perl_lib -I /wsfat/altera_2018.1/quartus/sopc_builder/bin -I /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/common -I /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart -- /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart/generate_rtl.pl --name=soc_system_jtag_uart --dir=/tmp/alt7834_2396238467859356514.dir/0007_jtag_uart_gen/ --quartus_dir=/wsfat/altera_2018.1/quartus --verilog --config=/tmp/alt7834_2396238467859356514.dir/0007_jtag_uart_gen//soc_system_jtag_uart_component_configuration.pl  --do_build_sim=0  ]
 Info: jtag_uart: Done RTL generation for module 'soc_system_jtag_uart'
 Info: jtag_uart: "soc_system" instantiated altera_avalon_jtag_uart "jtag_uart"
 Info: led_pio: Starting RTL generation for module 'soc_system_led_pio'
-Info: led_pio:   Generation command is [exec /wsfat/altera_2018.1/quartus/linux64/perl/bin/perl -I /wsfat/altera_2018.1/quartus/linux64/perl/lib -I /wsfat/altera_2018.1/quartus/sopc_builder/bin/europa -I /wsfat/altera_2018.1/quartus/sopc_builder/bin/perl_lib -I /wsfat/altera_2018.1/quartus/sopc_builder/bin -I /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/common -I /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=soc_system_led_pio --dir=/tmp/alt7831_6064169855587249320.dir/0008_led_pio_gen/ --quartus_dir=/wsfat/altera_2018.1/quartus --verilog --config=/tmp/alt7831_6064169855587249320.dir/0008_led_pio_gen//soc_system_led_pio_component_configuration.pl  --do_build_sim=0  ]
+Info: led_pio:   Generation command is [exec /wsfat/altera_2018.1/quartus/linux64/perl/bin/perl -I /wsfat/altera_2018.1/quartus/linux64/perl/lib -I /wsfat/altera_2018.1/quartus/sopc_builder/bin/europa -I /wsfat/altera_2018.1/quartus/sopc_builder/bin/perl_lib -I /wsfat/altera_2018.1/quartus/sopc_builder/bin -I /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/common -I /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /wsfat/altera_2018.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=soc_system_led_pio --dir=/tmp/alt7834_2396238467859356514.dir/0008_led_pio_gen/ --quartus_dir=/wsfat/altera_2018.1/quartus --verilog --config=/tmp/alt7834_2396238467859356514.dir/0008_led_pio_gen//soc_system_led_pio_component_configuration.pl  --do_build_sim=0  ]
 Info: led_pio: Done RTL generation for module 'soc_system_led_pio'
 Info: led_pio: "soc_system" instantiated altera_avalon_pio "led_pio"
 Info: mm_bridge_0: "soc_system" instantiated altera_avalon_mm_bridge "mm_bridge_0"
@@ -201,6 +201,7 @@ Info: avalon_st_adapter_013: Inserting error_adapter: error_adapter_0
 Info: avalon_st_adapter_014: Inserting error_adapter: error_adapter_0
 Info: avalon_st_adapter_015: Inserting error_adapter: error_adapter_0
 Info: avalon_st_adapter_016: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_017: Inserting error_adapter: error_adapter_0
 Info: mm_interconnect_3: "soc_system" instantiated altera_mm_interconnect "mm_interconnect_3"
 Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
 Info: mm_interconnect_4: "soc_system" instantiated altera_mm_interconnect "mm_interconnect_4"
@@ -271,16 +272,16 @@ Info: router_001: "mm_interconnect_3" instantiated altera_merlin_router "router_
 Info: router_002: "mm_interconnect_3" instantiated altera_merlin_router "router_002"
 Info: router_005: "mm_interconnect_3" instantiated altera_merlin_router "router_005"
 Info: router_006: "mm_interconnect_3" instantiated altera_merlin_router "router_006"
-Info: router_009: "mm_interconnect_3" instantiated altera_merlin_router "router_009"
+Info: router_010: "mm_interconnect_3" instantiated altera_merlin_router "router_010"
 Info: cmd_demux: "mm_interconnect_3" instantiated altera_merlin_demultiplexer "cmd_demux"
 Info: cmd_demux_001: "mm_interconnect_3" instantiated altera_merlin_demultiplexer "cmd_demux_001"
 Info: cmd_mux: "mm_interconnect_3" instantiated altera_merlin_multiplexer "cmd_mux"
 Info: Reusing file /wsfat/terasic/systemCD/Demonstrations/SoC_FPGA/DE10_NANO_SoC_FB/soc_system/synthesis/submodules/altera_merlin_arbitrator.sv
-Info: cmd_mux_007: "mm_interconnect_3" instantiated altera_merlin_multiplexer "cmd_mux_007"
+Info: cmd_mux_008: "mm_interconnect_3" instantiated altera_merlin_multiplexer "cmd_mux_008"
 Info: Reusing file /wsfat/terasic/systemCD/Demonstrations/SoC_FPGA/DE10_NANO_SoC_FB/soc_system/synthesis/submodules/altera_merlin_arbitrator.sv
 Info: rsp_demux: "mm_interconnect_3" instantiated altera_merlin_demultiplexer "rsp_demux"
-Info: rsp_demux_006: "mm_interconnect_3" instantiated altera_merlin_demultiplexer "rsp_demux_006"
 Info: rsp_demux_007: "mm_interconnect_3" instantiated altera_merlin_demultiplexer "rsp_demux_007"
+Info: rsp_demux_008: "mm_interconnect_3" instantiated altera_merlin_demultiplexer "rsp_demux_008"
 Info: rsp_mux: "mm_interconnect_3" instantiated altera_merlin_multiplexer "rsp_mux"
 Info: Reusing file /wsfat/terasic/systemCD/Demonstrations/SoC_FPGA/DE10_NANO_SoC_FB/soc_system/synthesis/submodules/altera_merlin_arbitrator.sv
 Info: rsp_mux_001: "mm_interconnect_3" instantiated altera_merlin_multiplexer "rsp_mux_001"
@@ -301,6 +302,6 @@ Info: border: "hps_io" instantiated altera_interface_generator "border"
 Info: error_adapter_0: "avalon_st_adapter" instantiated error_adapter "error_adapter_0"
 Info: error_adapter_0: "avalon_st_adapter" instantiated error_adapter "error_adapter_0"
 Info: error_adapter_0: "avalon_st_adapter_003" instantiated error_adapter "error_adapter_0"
-Info: soc_system: Done "soc_system" with 94 modules, 214 files
+Info: soc_system: Done "soc_system" with 94 modules, 215 files
 Info: qsys-generate succeeded.
 Info: Finished: Create HDL design files for synthesis

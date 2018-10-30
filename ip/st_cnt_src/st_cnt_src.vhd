@@ -46,8 +46,14 @@ end entity st_cnt_src;
 architecture rtl of st_cnt_src is
 signal s_pkt_cnt : unsigned(63 downto 0) := (others=>'0');
 signal s_data_out : std_logic_vector(63 downto 0) := (others=>'0');
-begin
+signal valid, ready : std_logic;
 
+attribute preserve: boolean;
+attribute preserve of valid: signal is true;
+attribute preserve of ready: signal is true;
+begin
+	ready <= aso_out0_ready;
+	aso_out0_valid <= valid;
 
 	-- Avalon Streams are network bit order
 	aso_out0_data(63 downto 56) <= s_data_out(39 downto 32);
@@ -66,14 +72,14 @@ begin
 	begin
 		if reset = '1' then
 			s_pkt_cnt <= (others=>'0');
-			aso_out0_valid <= '0';
+			valid <= '0';
 			s_data_out <= X"DEADBEEFDEADBEEF";
 		elsif rising_edge(clk) then
 			if aso_out0_ready = '1' then
 				aso_out0_sop <= '0';
 				aso_out0_eop <= '0';
 				s_data_out <= std_logic_vector(s_pkt_cnt);
-				aso_out0_valid <= '1';
+				valid <= '1';
 
 				if s_pkt_cnt = 0 then
 					aso_out0_sop <= '1';

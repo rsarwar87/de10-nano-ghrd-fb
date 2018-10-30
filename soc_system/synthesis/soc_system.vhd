@@ -188,6 +188,9 @@ architecture rtl of soc_system is
 			src_data             : out std_logic_vector(255 downto 0);                    -- data
 			src_valid            : out std_logic;                                         -- valid
 			src_ready            : in  std_logic                      := 'X';             -- ready
+			src_sop              : out std_logic;                                         -- startofpacket
+			src_eop              : out std_logic;                                         -- endofpacket
+			src_empty            : out std_logic_vector(4 downto 0);                      -- empty
 			snk_command_data     : in  std_logic_vector(255 downto 0) := (others => 'X'); -- data
 			snk_command_valid    : in  std_logic                      := 'X';             -- valid
 			snk_command_ready    : out std_logic;                                         -- ready
@@ -195,9 +198,6 @@ architecture rtl of soc_system is
 			src_response_valid   : out std_logic;                                         -- valid
 			src_response_ready   : in  std_logic                      := 'X';             -- ready
 			master_burstcount    : out std_logic_vector(0 downto 0);                      -- burstcount
-			src_sop              : out std_logic;                                         -- startofpacket
-			src_eop              : out std_logic;                                         -- endofpacket
-			src_empty            : out std_logic_vector(4 downto 0);                      -- empty
 			src_error            : out std_logic_vector(7 downto 0);                      -- error
 			src_channel          : out std_logic_vector(7 downto 0)                       -- channel
 		);
@@ -577,6 +577,7 @@ architecture rtl of soc_system is
 			dma_write_master_0_Data_Write_Master_writedata            : in  std_logic_vector(255 downto 0) := (others => 'X'); -- writedata
 			dma_write_master_1_Data_Write_Master_address              : in  std_logic_vector(31 downto 0)  := (others => 'X'); -- address
 			dma_write_master_1_Data_Write_Master_waitrequest          : out std_logic;                                         -- waitrequest
+			dma_write_master_1_Data_Write_Master_burstcount           : in  std_logic_vector(8 downto 0)   := (others => 'X'); -- burstcount
 			dma_write_master_1_Data_Write_Master_byteenable           : in  std_logic_vector(31 downto 0)  := (others => 'X'); -- byteenable
 			dma_write_master_1_Data_Write_Master_write                : in  std_logic                      := 'X';             -- write
 			dma_write_master_1_Data_Write_Master_writedata            : in  std_logic_vector(255 downto 0) := (others => 'X'); -- writedata
@@ -1016,6 +1017,9 @@ architecture rtl of soc_system is
 			snk_data           : in  std_logic_vector(255 downto 0) := (others => 'X'); --         Data_Sink.data
 			snk_valid          : in  std_logic                      := 'X';             --                  .valid
 			snk_ready          : out std_logic;                                         --                  .ready
+			snk_sop            : in  std_logic                      := 'X';             --                  .startofpacket
+			snk_eop            : in  std_logic                      := 'X';             --                  .endofpacket
+			snk_empty          : in  std_logic_vector(4 downto 0)   := (others => 'X'); --                  .empty
 			snk_command_data   : in  std_logic_vector(255 downto 0) := (others => 'X'); --      Command_Sink.data
 			snk_command_valid  : in  std_logic                      := 'X';             --                  .valid
 			snk_command_ready  : out std_logic;                                         --                  .ready
@@ -1023,10 +1027,7 @@ architecture rtl of soc_system is
 			src_response_valid : out std_logic;                                         --                  .valid
 			src_response_ready : in  std_logic                      := 'X';             --                  .ready
 			master_burstcount  : out std_logic_vector(0 downto 0);
-			snk_empty          : in  std_logic_vector(4 downto 0)   := (others => 'X');
-			snk_eop            : in  std_logic                      := 'X';
-			snk_error          : in  std_logic_vector(7 downto 0)   := (others => 'X');
-			snk_sop            : in  std_logic                      := 'X'
+			snk_error          : in  std_logic_vector(7 downto 0)   := (others => 'X')
 		);
 	end component soc_system_dma_write_master_0;
 
@@ -1065,6 +1066,7 @@ architecture rtl of soc_system is
 			master_byteenable  : out std_logic_vector(31 downto 0);                     --                  .byteenable
 			master_writedata   : out std_logic_vector(255 downto 0);                    --                  .writedata
 			master_waitrequest : in  std_logic                      := 'X';             --                  .waitrequest
+			master_burstcount  : out std_logic_vector(8 downto 0);                      --                  .burstcount
 			snk_data           : in  std_logic_vector(255 downto 0) := (others => 'X'); --         Data_Sink.data
 			snk_valid          : in  std_logic                      := 'X';             --                  .valid
 			snk_ready          : out std_logic;                                         --                  .ready
@@ -1077,7 +1079,6 @@ architecture rtl of soc_system is
 			src_response_data  : out std_logic_vector(255 downto 0);                    --   Response_Source.data
 			src_response_valid : out std_logic;                                         --                  .valid
 			src_response_ready : in  std_logic                      := 'X';             --                  .ready
-			master_burstcount  : out std_logic_vector(0 downto 0);
 			snk_error          : in  std_logic_vector(7 downto 0)   := (others => 'X')
 		);
 	end component soc_system_dma_write_master_1;
@@ -1310,6 +1311,9 @@ architecture rtl of soc_system is
 	signal dma_read_master_0_data_source_valid                                       : std_logic;                      -- dma_read_master_0:src_valid -> dma_write_master_0:snk_valid
 	signal dma_read_master_0_data_source_data                                        : std_logic_vector(255 downto 0); -- dma_read_master_0:src_data -> dma_write_master_0:snk_data
 	signal dma_read_master_0_data_source_ready                                       : std_logic;                      -- dma_write_master_0:snk_ready -> dma_read_master_0:src_ready
+	signal dma_read_master_0_data_source_startofpacket                               : std_logic;                      -- dma_read_master_0:src_sop -> dma_write_master_0:snk_sop
+	signal dma_read_master_0_data_source_endofpacket                                 : std_logic;                      -- dma_read_master_0:src_eop -> dma_write_master_0:snk_eop
+	signal dma_read_master_0_data_source_empty                                       : std_logic_vector(4 downto 0);   -- dma_read_master_0:src_empty -> dma_write_master_0:snk_empty
 	signal modular_sgdma_dispatcher_1_read_command_source_valid                      : std_logic;                      -- modular_sgdma_dispatcher_1:src_read_master_valid -> dma_read_master_0:snk_command_valid
 	signal modular_sgdma_dispatcher_1_read_command_source_data                       : std_logic_vector(255 downto 0); -- modular_sgdma_dispatcher_1:src_read_master_data -> dma_read_master_0:snk_command_data
 	signal modular_sgdma_dispatcher_1_read_command_source_ready                      : std_logic;                      -- dma_read_master_0:snk_command_ready -> modular_sgdma_dispatcher_1:src_read_master_ready
@@ -1351,6 +1355,7 @@ architecture rtl of soc_system is
 	signal dma_write_master_1_data_write_master_byteenable                           : std_logic_vector(31 downto 0);  -- dma_write_master_1:master_byteenable -> mm_interconnect_0:dma_write_master_1_Data_Write_Master_byteenable
 	signal dma_write_master_1_data_write_master_write                                : std_logic;                      -- dma_write_master_1:master_write -> mm_interconnect_0:dma_write_master_1_Data_Write_Master_write
 	signal dma_write_master_1_data_write_master_writedata                            : std_logic_vector(255 downto 0); -- dma_write_master_1:master_writedata -> mm_interconnect_0:dma_write_master_1_Data_Write_Master_writedata
+	signal dma_write_master_1_data_write_master_burstcount                           : std_logic_vector(8 downto 0);   -- dma_write_master_1:master_burstcount -> mm_interconnect_0:dma_write_master_1_Data_Write_Master_burstcount
 	signal f2sdram_only_master_master_readdata                                       : std_logic_vector(31 downto 0);  -- mm_interconnect_0:f2sdram_only_master_master_readdata -> f2sdram_only_master:master_readdata
 	signal f2sdram_only_master_master_waitrequest                                    : std_logic;                      -- mm_interconnect_0:f2sdram_only_master_master_waitrequest -> f2sdram_only_master:master_waitrequest
 	signal f2sdram_only_master_master_address                                        : std_logic_vector(31 downto 0);  -- f2sdram_only_master:master_address -> mm_interconnect_0:f2sdram_only_master_master_address
@@ -1634,7 +1639,7 @@ begin
 	ilc : component interrupt_latency_counter
 		generic map (
 			INTR_TYPE    => 0,
-			CLOCK_RATE   => 50000000,
+			CLOCK_RATE   => 100000000,
 			IRQ_PORT_CNT => 7
 		)
 		port map (
@@ -1681,7 +1686,7 @@ begin
 			FIFO_DEPTH                => 32,
 			STRIDE_ENABLE             => 0,
 			BURST_ENABLE              => 0,
-			PACKET_ENABLE             => 0,
+			PACKET_ENABLE             => 1,
 			ERROR_ENABLE              => 0,
 			ERROR_WIDTH               => 8,
 			CHANNEL_ENABLE            => 0,
@@ -1714,6 +1719,9 @@ begin
 			src_data             => dma_read_master_0_data_source_data,                   --      Data_Source.data
 			src_valid            => dma_read_master_0_data_source_valid,                  --                 .valid
 			src_ready            => dma_read_master_0_data_source_ready,                  --                 .ready
+			src_sop              => dma_read_master_0_data_source_startofpacket,          --                 .startofpacket
+			src_eop              => dma_read_master_0_data_source_endofpacket,            --                 .endofpacket
+			src_empty            => dma_read_master_0_data_source_empty,                  --                 .empty
 			snk_command_data     => modular_sgdma_dispatcher_1_read_command_source_data,  --     Command_Sink.data
 			snk_command_valid    => modular_sgdma_dispatcher_1_read_command_source_valid, --                 .valid
 			snk_command_ready    => modular_sgdma_dispatcher_1_read_command_source_ready, --                 .ready
@@ -1721,9 +1729,6 @@ begin
 			src_response_valid   => dma_read_master_0_response_source_valid,              --                 .valid
 			src_response_ready   => dma_read_master_0_response_source_ready,              --                 .ready
 			master_burstcount    => open,                                                 --      (terminated)
-			src_sop              => open,                                                 --      (terminated)
-			src_eop              => open,                                                 --      (terminated)
-			src_empty            => open,                                                 --      (terminated)
 			src_error            => open,                                                 --      (terminated)
 			src_channel          => open                                                  --      (terminated)
 		);
@@ -1735,7 +1740,7 @@ begin
 			FIFO_DEPTH                     => 32,
 			STRIDE_ENABLE                  => 0,
 			BURST_ENABLE                   => 0,
-			PACKET_ENABLE                  => 0,
+			PACKET_ENABLE                  => 1,
 			ERROR_ENABLE                   => 0,
 			ERROR_WIDTH                    => 8,
 			BYTE_ENABLE_WIDTH              => 32,
@@ -1766,6 +1771,9 @@ begin
 			snk_data           => dma_read_master_0_data_source_data,                    --         Data_Sink.data
 			snk_valid          => dma_read_master_0_data_source_valid,                   --                  .valid
 			snk_ready          => dma_read_master_0_data_source_ready,                   --                  .ready
+			snk_sop            => dma_read_master_0_data_source_startofpacket,           --                  .startofpacket
+			snk_eop            => dma_read_master_0_data_source_endofpacket,             --                  .endofpacket
+			snk_empty          => dma_read_master_0_data_source_empty,                   --                  .empty
 			snk_command_data   => modular_sgdma_dispatcher_0_write_command_source_data,  --      Command_Sink.data
 			snk_command_valid  => modular_sgdma_dispatcher_0_write_command_source_valid, --                  .valid
 			snk_command_ready  => modular_sgdma_dispatcher_0_write_command_source_ready, --                  .ready
@@ -1773,9 +1781,6 @@ begin
 			src_response_valid => dma_write_master_0_response_source_valid,              --                  .valid
 			src_response_ready => dma_write_master_0_response_source_ready,              --                  .ready
 			master_burstcount  => open,                                                  --       (terminated)
-			snk_sop            => '0',                                                   --       (terminated)
-			snk_eop            => '0',                                                   --       (terminated)
-			snk_empty          => "00000",                                               --       (terminated)
 			snk_error          => "00000000"                                             --       (terminated)
 		);
 
@@ -1783,25 +1788,25 @@ begin
 		generic map (
 			DATA_WIDTH                     => 256,
 			LENGTH_WIDTH                   => 32,
-			FIFO_DEPTH                     => 128,
+			FIFO_DEPTH                     => 1024,
 			STRIDE_ENABLE                  => 0,
-			BURST_ENABLE                   => 0,
+			BURST_ENABLE                   => 1,
 			PACKET_ENABLE                  => 1,
 			ERROR_ENABLE                   => 0,
 			ERROR_WIDTH                    => 8,
 			BYTE_ENABLE_WIDTH              => 32,
 			BYTE_ENABLE_WIDTH_LOG2         => 5,
 			ADDRESS_WIDTH                  => 32,
-			FIFO_DEPTH_LOG2                => 7,
+			FIFO_DEPTH_LOG2                => 10,
 			SYMBOL_WIDTH                   => 8,
 			NUMBER_OF_SYMBOLS              => 32,
 			NUMBER_OF_SYMBOLS_LOG2         => 5,
-			MAX_BURST_COUNT_WIDTH          => 1,
+			MAX_BURST_COUNT_WIDTH          => 9,
 			UNALIGNED_ACCESSES_ENABLE      => 0,
 			ONLY_FULL_ACCESS_ENABLE        => 0,
 			BURST_WRAPPING_SUPPORT         => 0,
 			PROGRAMMABLE_BURST_ENABLE      => 0,
-			MAX_BURST_COUNT                => 1,
+			MAX_BURST_COUNT                => 256,
 			FIFO_SPEED_OPTIMIZATION        => 1,
 			STRIDE_WIDTH                   => 1,
 			ACTUAL_BYTES_TRANSFERRED_WIDTH => 32
@@ -1814,6 +1819,7 @@ begin
 			master_byteenable  => dma_write_master_1_data_write_master_byteenable,       --                  .byteenable
 			master_writedata   => dma_write_master_1_data_write_master_writedata,        --                  .writedata
 			master_waitrequest => dma_write_master_1_data_write_master_waitrequest,      --                  .waitrequest
+			master_burstcount  => dma_write_master_1_data_write_master_burstcount,       --                  .burstcount
 			snk_data           => dma_write_master_1_data_sink_data,                     --         Data_Sink.data
 			snk_valid          => dma_write_master_1_data_sink_valid,                    --                  .valid
 			snk_ready          => dma_write_master_1_data_sink_ready,                    --                  .ready
@@ -1826,7 +1832,6 @@ begin
 			src_response_data  => dma_write_master_1_response_source_data,               --   Response_Source.data
 			src_response_valid => dma_write_master_1_response_source_valid,              --                  .valid
 			src_response_ready => dma_write_master_1_response_source_ready,              --                  .ready
-			master_burstcount  => open,                                                  --       (terminated)
 			snk_error          => "00000000"                                             --       (terminated)
 		);
 
@@ -2455,6 +2460,7 @@ begin
 			dma_write_master_0_Data_Write_Master_writedata            => dma_write_master_0_data_write_master_writedata,     --                                                    .writedata
 			dma_write_master_1_Data_Write_Master_address              => dma_write_master_1_data_write_master_address,       --                dma_write_master_1_Data_Write_Master.address
 			dma_write_master_1_Data_Write_Master_waitrequest          => dma_write_master_1_data_write_master_waitrequest,   --                                                    .waitrequest
+			dma_write_master_1_Data_Write_Master_burstcount           => dma_write_master_1_data_write_master_burstcount,    --                                                    .burstcount
 			dma_write_master_1_Data_Write_Master_byteenable           => dma_write_master_1_data_write_master_byteenable,    --                                                    .byteenable
 			dma_write_master_1_Data_Write_Master_write                => dma_write_master_1_data_write_master_write,         --                                                    .write
 			dma_write_master_1_Data_Write_Master_writedata            => dma_write_master_1_data_write_master_writedata,     --                                                    .writedata

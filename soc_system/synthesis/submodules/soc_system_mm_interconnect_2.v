@@ -450,7 +450,7 @@ module soc_system_mm_interconnect_2 (
 	altera_avalon_sc_fifo #(
 		.SYMBOLS_PER_BEAT    (1),
 		.BITS_PER_SYMBOL     (113),
-		.FIFO_DEPTH          (5),
+		.FIFO_DEPTH          (33),
 		.CHANNEL_WIDTH       (0),
 		.ERROR_WIDTH         (0),
 		.USE_PACKETS         (1),
@@ -491,7 +491,7 @@ module soc_system_mm_interconnect_2 (
 	altera_avalon_sc_fifo #(
 		.SYMBOLS_PER_BEAT    (1),
 		.BITS_PER_SYMBOL     (34),
-		.FIFO_DEPTH          (8),
+		.FIFO_DEPTH          (64),
 		.CHANNEL_WIDTH       (0),
 		.ERROR_WIDTH         (0),
 		.USE_PACKETS         (0),

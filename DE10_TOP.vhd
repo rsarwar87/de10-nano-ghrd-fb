@@ -117,6 +117,18 @@ architecture rtl of DE10_TOP is
   end component vga_pll;
  
 
+component clock_gen is
+	port (
+		refclk   : in  std_logic := '0'; --  refclk.clk
+		rst      : in  std_logic := '0'; --   reset.reset
+		outclk_0 : out std_logic;        -- outclk0.clk 100
+		outclk_1 : out std_logic;        -- outclk1.clk 150
+		outclk_2 : out std_logic;        -- outclk2.clk 200
+		outclk_3 : out std_logic;        -- outclk3.clk 240
+		outclk_4 : out std_logic;        -- outclk4.clk 300
+		locked   : out std_logic         --  locked.export
+	);
+end component;
   component I2C_HDMI_Config is
     port (
         iCLK : in std_logic;
@@ -265,14 +277,26 @@ signal aso_out0_ready : std_logic                     := '0'; --      .ready
 signal aso_out0_valid : std_logic;                            --      .valid
 signal aso_out0_sop   : std_logic;                            --      .startofpacket
 signal aso_out0_eop   : std_logic;   
+signal clk, clk100, clk150, clk200, clk250, clk300 : std_logic;        -- outclk0.clk 100
+
 begin
     LED(7 downto 3) <= aso_out0_data(6 downto 2);
 	 LED(1) <= aso_out0_valid;
 	 LED(2) <= aso_out0_ready;
     fpga_clk_50 <= FPGA_CLK1_50;
     stm_hw_events(12 downto 0) <= SW & fpga_led_internal & fpga_debounced_buttons;
-
-
+clocks : clock_gen
+	port map (
+		refclk   => FPGA_CLK1_50, --  refclk.clk
+		rst      => '0', --   reset.reset
+		outclk_0 => clk100,        -- outclk0.clk 100
+		outclk_1 => clk150,        -- outclk1.clk 150
+		outclk_2 => clk200,        -- outclk2.clk 200
+		outclk_3 => clk250,        -- outclk3.clk 240
+		outclk_4 => clk300,        -- outclk4.clk 300
+		locked   => open         --  locked.export
+	);
+	clk <= clk100;
 
     process(fpga_clk_50, hps_fpga_reset_n)
 		
@@ -310,7 +334,7 @@ begin
         alt_vip_itc_0_clocked_video_vid_v         => open,         --                               .vid_v
             
         -- CLOCK
-        clk_clk                                   => FPGA_CLK1_50, --                            clk.clk
+        clk_clk                                   => clk, --                            clk.clk
         clk_130_clk                               => clk_130,      --                        clk_130.clk
 				
 	-- RESETCONTROL
@@ -415,7 +439,7 @@ begin
 	 
 st_cnt: st_cnt_src
 	port map (
-		clk            => FPGA_CLK1_50,
+		clk            => clk,
 		reset          => '0',
 		aso_out0_data  => aso_out0_data(63 downto 0),
 		aso_out0_ready => aso_out0_ready,
