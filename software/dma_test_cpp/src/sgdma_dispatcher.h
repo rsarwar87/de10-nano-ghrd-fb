@@ -11,6 +11,7 @@
 #include "stdio.h"
 #include "sgdma_dispatcher_regs.h"
 
+enum _mtype {rd, wr, desc, desp, resp, sta};
 
 class tcCSRMap;
 /**
@@ -25,20 +26,49 @@ public:
 		          		unsigned int RespRegsAddr,
 						bool EnhancedMode = false);
 
-
 	~tcSGDMADispatcher(void);
 
-	int WriteDescriptor(tsSGDMADescriptor& descriptor);
-	int SetDescriptor(tsSGDMADescriptor& descriptor);
-	int GetStatus(tsSGDMADescriptor& descriptor);
-	int GetResponse(tsSGDMADescriptor& descriptor);
+        int SetDescriptor(tsSGDMADescriptor& descript);
+	int WriteDescriptor();
 
+        int InitDescriptor(unsigned int wr_addr, unsigned int rd_addr, unsigned int len = 0xFFFFFFFF);
+        int SetPacketization(bool val);
+        int SetPacketSize(unsigned int val);
+
+        tuSgdmaCtrl GetControlReg();
+        int GetSequenceNumber(_mtype _ty); // read, write
+        int GetBufferFillLevel(_mtype _ty); // read, write, response
 	tuSgdmaStatus GetStatusReg();
+	int GetResponseReg();
+        
+        bool isBusy();
+        bool isBufferEmpty(_mtype _ty); // desc, response
+        bool isFull(_mtype _ty); // desc, response
+        bool isResting();
+        bool isStopped();
+        bool isStoppedOnError();
+        bool isStoppedOnEarlyTermination();
+
+        int SetStopOnError(bool val);
+        int SetStopOnEarlyTermination(bool val);
+        int Enable(_mtype _ty, bool val); // disp, descript
+        int SetGlobalInterruptMask(bool val);
+        int Reset();
+        int ReadIRQ();
+        int ClearIRQ();
+
+
+
+
 protected:
 	bool		mbEnhanced; //!< when true, use enhanced descriptors
 	tcCSRMap *mpCsr;
 	tcCSRMap *mpDescriptors;
 	tcCSRMap *mpResponse;
+        tsSGDMADescriptor descriptor;
+        tuSgdmaCtrl mCtlrReg;
+        bool ready;
+        bool isReady(_mtype _ty);
 };
 
 #endif
