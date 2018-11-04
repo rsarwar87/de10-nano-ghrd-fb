@@ -49,16 +49,19 @@ int TestDispatcher()
 		// We are using packetized streams so set length to max
 		descriptor.length = 0xFFFFFFF;
 		// The dispatcher will use the End of Packet flag to end the transfer
-		descriptor.control.msBits.end_on_eop = 1;
+		//descriptor.control.msBits.end_on_eop = 1;
 		//descriptor.control.msBits.park_wr = 1;
 		// Tell the dispatcher to start
 		descriptor.control.msBits.go = 1;
 
 		printf("Starting Descriptor, write starts at addr: %x: ", HPS_MEM_STORE_STARTADDR);
-		dispatcher.WriteDescriptor(descriptor);
+		dispatcher.SetDescriptor(descriptor);
+		dispatcher.SetPacketization(true);
+		dispatcher.WriteDescriptor();
 		tuSgdmaStatus ret = dispatcher.GetStatusReg();
 		printf("DONE %x\n", ret.msBits);
 
+		return 0;
 }
 
 
@@ -108,13 +111,17 @@ int TestBridgeDMAStd()
 
 		printf("Starting Descriptor, write starts from %x addr to %x addr\n\t\t ",
 								HPS_MEM_mSGDMA_SENADDR, HPS_MEM_mSGDMA_RECADDR);
-		stream2ram.WriteDescriptor(descriptor_sr);
+		stream2ram.SetDescriptor(descriptor_sr);
+		stream2ram.WriteDescriptor();
 		sleep(0.5);
-		ram2stream.WriteDescriptor(descriptor_rs);
+		ram2stream.SetDescriptor(descriptor_rs);
+		ram2stream.WriteDescriptor();
 
-		tuSgdmaStatus ret1 = ram2stream.GetStatusReg();
-		tuSgdmaStatus ret2 = stream2ram.GetStatusReg();
-		printf("DONE r2s status=%x s2r status=%x\n", ret1.msBits, ret2.msBits);
+		printf("DONE r2s status=%x s2r status=%x\n",
+				ram2stream.isBufferEmpty(desc)*2+ ram2stream.isBusy(),
+				stream2ram.isBufferEmpty(desc)*2+ stream2ram.isBusy() );
+
+		return 0;
 }
 int TestBridge()
 {
@@ -162,13 +169,17 @@ int TestBridge()
 
 		printf("Starting Descriptor, write starts from %x addr to %x addr\n\t\t ",
 								HPS_MEM_mSGDMA_SENADDR, HPS_MEM_mSGDMA_RECADDR);
-		stream2ram.WriteDescriptor(descriptor_sr);
+		stream2ram.SetDescriptor(descriptor_sr);
+		stream2ram.WriteDescriptor();
 		sleep(0.5);
-		ram2stream.WriteDescriptor(descriptor_rs);
+		ram2stream.SetDescriptor(descriptor_rs);
+		ram2stream.WriteDescriptor();
 
-		tuSgdmaStatus ret1 = ram2stream.GetStatusReg();
-		tuSgdmaStatus ret2 = stream2ram.GetStatusReg();
-		printf("DONE r2s status=%x s2r status=%x\n", ret1.msBits, ret2.msBits);
+		printf("DONE r2s status=%x s2r status=%x\n",
+				2*stream2ram.isBusy()+stream2ram.isBufferEmpty(desc),
+				2*ram2stream.isBusy()+ram2stream.isBufferEmpty(desc));
+
+		return 0;
 }
 
 int main(int argc, char* argv[])

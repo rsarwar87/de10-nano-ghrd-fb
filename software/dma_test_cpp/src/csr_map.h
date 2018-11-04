@@ -28,6 +28,18 @@ public:
 		volatile unsigned int* preg = (volatile unsigned int*)((unsigned int)mpRegMapMM);
 		preg[offset] = value;
 	}
+        void WriteCtrlReg16(int offset, uint16_t value)
+	{
+		volatile uint16_t* preg = (volatile uint16_t*)((uint32_t)mpRegMapMM);
+		preg[offset] = value;
+	}
+ 
+        void WriteCtrlReg8(int offset, uint8_t value)
+	{
+		volatile uint8_t* preg = (volatile uint8_t*)((uint32_t)mpRegMapMM);
+		preg[offset] = value;
+	}
+ 
 
 	void	*mpRegMapMM;  //!< memory mapped pointer to registers
 };
