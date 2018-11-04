@@ -400,6 +400,22 @@
          type = "String";
       }
    }
+   element soft_interrupt_0
+   {
+      datum _sortIndex
+      {
+         value = "23";
+         type = "int";
+      }
+   }
+   element soft_interrupt_0.avalon_slave_0
+   {
+      datum baseAddress
+      {
+         value = "0";
+         type = "String";
+      }
+   }
    element subsystemB_0
    {
       datum _sortIndex
@@ -487,6 +503,11 @@
    name="dma_write_master_1_data_sink"
    internal="dma_write_master_1.Data_Sink"
    type="avalon_streaming"
+   dir="end" />
+ <interface
+   name="export"
+   internal="soft_interrupt_0.conduit_end"
+   type="conduit"
    dir="end" />
  <interface
    name="hps_0_f2h_cold_reset_req"
@@ -1435,6 +1456,11 @@
   <parameter name="USE_FIX_ADDRESS_WIDTH" value="0" />
  </module>
  <module
+   name="soft_interrupt_0"
+   kind="soft_interrupt"
+   version="1.0"
+   enabled="1" />
+ <module
    name="sysid_qsys"
    kind="altera_avalon_sysid_qsys"
    version="18.1"
@@ -1605,6 +1631,15 @@
    end="ILC.avalon_slave">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x00030000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.1"
+   start="mm_bridge_0.m0"
+   end="soft_interrupt_0.avalon_slave_0">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1890,6 +1925,11 @@
    kind="clock"
    version="18.1"
    start="clk_0.clk"
+   end="soft_interrupt_0.clock" />
+ <connection
+   kind="clock"
+   version="18.1"
+   start="clk_0.clk"
    end="hps_0.f2h_axi_clock" />
  <connection
    kind="clock"
@@ -1955,8 +1995,15 @@
    kind="interrupt"
    version="18.1"
    start="hps_0.f2h_irq0"
-   end="dipsw_pio.irq">
+   end="soft_interrupt_0.interrupt_sender">
   <parameter name="irqNumber" value="0" />
+ </connection>
+ <connection
+   kind="interrupt"
+   version="18.1"
+   start="hps_0.f2h_irq0"
+   end="dipsw_pio.irq">
+  <parameter name="irqNumber" value="9" />
  </connection>
  <connection
    kind="interrupt"
@@ -2104,6 +2151,11 @@
    version="18.1"
    start="clk_0.clk_reset"
    end="mm_bridge_sdram.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk_0.clk_reset"
+   end="soft_interrupt_0.reset" />
  <connection kind="reset" version="18.1" start="clk_0.clk_reset" end="ILC.reset_n" />
  <connection
    kind="reset"

@@ -231,7 +231,11 @@ end component;
             dma_write_master_1_data_sink_ready        : out   std_logic;                                         -- ready
 				dma_write_master_1_data_sink_startofpacket : in    std_logic                     := 'X';             -- startofpacket
             dma_write_master_1_data_sink_endofpacket   : in    std_logic                     := 'X';             -- endofpacket
-            dma_write_master_1_data_sink_empty         : in    std_logic_vector(4 downto 0)  := (others => 'X')  -- empty
+            dma_write_master_1_data_sink_empty         : in    std_logic_vector(4 downto 0)  := (others => 'X');  -- empty
+				export_exportkeys                          : in    std_logic_vector(1 downto 0)   := (others => 'X'); -- exportkeys
+            export_exportothers                        : in    std_logic_vector(25 downto 0)  := (others => 'X'); -- exportothers
+            export_exportsw                            : in    std_logic_vector(3 downto 0)   := (others => 'X')  -- exportsw
+  
 
         );
     end component soc_system;
@@ -280,7 +284,7 @@ signal aso_out0_eop   : std_logic;
 signal clk, clk100, clk150, clk200, clk250, clk300 : std_logic;        -- outclk0.clk 100
 
 begin
-    LED(7 downto 3) <= aso_out0_data(6 downto 2);
+    LED(7 downto 3) <= fpga_led_internal(6 downto 2);
 	 LED(1) <= aso_out0_valid;
 	 LED(2) <= aso_out0_ready;
     fpga_clk_50 <= FPGA_CLK1_50;
@@ -434,7 +438,13 @@ clocks : clock_gen
         dma_write_master_1_data_sink_ready        => aso_out0_ready,       --                               .ready
 		  dma_write_master_1_data_sink_startofpacket => aso_out0_sop, --                               .startofpacket
         dma_write_master_1_data_sink_endofpacket   => aso_out0_eop,   --                               .endofpacket
-        dma_write_master_1_data_sink_empty         => open          --                               .empty
+        dma_write_master_1_data_sink_empty         => open,          --                               .empty
+		  export_exportkeys                          => fpga_debounced_buttons,                          --                         export.exportkeys
+        export_exportothers                        => open,                        --                               .exportothers
+        export_exportsw                            => SW                             --                               .exportsw
+        
+
+
 	 );
 	 
 st_cnt: st_cnt_src
