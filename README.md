@@ -8,7 +8,7 @@ This particular example implements three different varities of DMA to transfer d
 The 1 GB RAM is divided in two halves: 0-900 MB for linux partition; whilst the range 900-1000GB belongs to the FPGA.
 
 Examples realized:
-1. av-stream from custom ip -> Write Master -> mSGDMA Dispatcher -> HPS RAM (0x3900_0000) [Working]
+1. av-stream from custom ip @ 300 Mhz/64-bit -> 300 MHz @ 256-bit -> 100 Mhz @ 256-bit -> Write Master -> mSGDMA Dispatcher -> HPS RAM (0x3900_0000) [Working]
 2. HPS RAM (0x3600_0000) -> Read master -> mSGDMA Dispatcher -> mSGDMA Dispatcher -> Write Master -> HPS_RAM (0x3700_0000) [Problem with mm2s interface]
 3. HPS RAM -> mSGDMA -> mSGDMA -> HPS RAM [Working]
 
