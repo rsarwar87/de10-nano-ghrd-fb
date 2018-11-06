@@ -226,16 +226,18 @@ end component;
             memory_mem_dm                             : out   std_logic_vector(3 downto 0);                     -- mem_dm
             memory_oct_rzqin                          : in    std_logic                     := 'X';             -- oct_rzqin
             reset_reset_n                             : in    std_logic                     := 'X';             -- reset_n
-            dma_write_master_1_data_sink_data         : in    std_logic_vector(255 downto 0) := (others => 'X'); -- data
+            dma_write_master_1_data_sink_data         : in    std_logic_vector(63 downto 0) := (others => 'X'); -- data
             dma_write_master_1_data_sink_valid        : in    std_logic                     := 'X';             -- valid
             dma_write_master_1_data_sink_ready        : out   std_logic;                                         -- ready
 				dma_write_master_1_data_sink_startofpacket : in    std_logic                     := 'X';             -- startofpacket
             dma_write_master_1_data_sink_endofpacket   : in    std_logic                     := 'X';             -- endofpacket
-            dma_write_master_1_data_sink_empty         : in    std_logic_vector(4 downto 0)  := (others => 'X');  -- empty
+            --dma_write_master_1_data_sink_empty         : in    std_logic_vector(4 downto 0)  := (others => 'X');  -- empty
 				export_exportkeys                          : in    std_logic_vector(1 downto 0)   := (others => 'X'); -- exportkeys
             export_exportothers                        : in    std_logic_vector(25 downto 0)  := (others => 'X'); -- exportothers
-            export_exportsw                            : in    std_logic_vector(3 downto 0)   := (others => 'X')  -- exportsw
+            export_exportsw                            : in    std_logic_vector(3 downto 0)   := (others => 'X');  -- exportsw
   
+				clk_0_clk                                  : in    std_logic                     := 'X';             -- clk
+            reset_0_reset_n                            : in    std_logic                     := 'X'              -- reset_n
 
         );
     end component soc_system;
@@ -276,12 +278,12 @@ component st_cnt_src is
 		aso_out0_eop   : out std_logic                             --      .endofpacket
 	);
 end component;
-signal aso_out0_data  : std_logic_vector(255 downto 0);        --  out0.data
+signal aso_out0_data  : std_logic_vector(63 downto 0);        --  out0.data
 signal aso_out0_ready : std_logic                     := '0'; --      .ready
 signal aso_out0_valid : std_logic;                            --      .valid
 signal aso_out0_sop   : std_logic;                            --      .startofpacket
 signal aso_out0_eop   : std_logic;   
-signal clk, clk100, clk150, clk200, clk250, clk300 : std_logic;        -- outclk0.clk 100
+signal clk, clk100, clk150, clk200, clk250, clk300, clk_0_clk : std_logic;        -- outclk0.clk 100
 
 begin
     LED(7 downto 3) <= fpga_led_internal(6 downto 2);
@@ -301,6 +303,7 @@ clocks : clock_gen
 		locked   => open         --  locked.export
 	);
 	clk <= clk100;
+	clk_0_clk <= clk300;
 
     process(fpga_clk_50, hps_fpga_reset_n)
 		
@@ -438,18 +441,21 @@ clocks : clock_gen
         dma_write_master_1_data_sink_ready        => aso_out0_ready,       --                               .ready
 		  dma_write_master_1_data_sink_startofpacket => aso_out0_sop, --                               .startofpacket
         dma_write_master_1_data_sink_endofpacket   => aso_out0_eop,   --                               .endofpacket
-        dma_write_master_1_data_sink_empty         => open,          --                               .empty
+        --dma_write_master_1_data_sink_empty         => open,          --                               .empty
 		  export_exportkeys                          => fpga_debounced_buttons,                          --                         export.exportkeys
         export_exportothers                        => open,                        --                               .exportothers
-        export_exportsw                            => SW                             --                               .exportsw
+        export_exportsw                            => SW,                             --                               .exportsw
+        clk_0_clk                                  => clk_0_clk                                  ,                                  --                          clk_0.clk
+            reset_0_reset_n                            => hps_fpga_reset_n                             --                        reset_0.reset_n
         
+
 
 
 	 );
 	 
 st_cnt: st_cnt_src
 	port map (
-		clk            => clk,
+		clk            => clk_0_clk,
 		reset          => '0',
 		aso_out0_data  => aso_out0_data(63 downto 0),
 		aso_out0_ready => aso_out0_ready,

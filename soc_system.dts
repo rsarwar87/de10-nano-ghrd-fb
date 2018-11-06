@@ -117,6 +117,24 @@
 				<0x00000001 0x00003000 0xff203000 0x00000010>,
 				<0x00000001 0x00004000 0xff204000 0x00000010>,
 				<0x00000001 0x00005000 0xff205000 0x00000010>;
+                        fpgaint3: fpgaint@3 {
+                            compatible = "altr,fpgaint-0.1";
+                            label = "dma_dispatcher_mm2s";
+			    interrupt-parent = <&hps_0_arm_gic_0>;
+                            interrupts = <0 43 1>;
+                        };
+                        fpgaint4: fpgaint@4 {
+                            compatible = "altr,fpgaint-0.1";
+                            label = "dma_dispatcher_s2mm";
+			    interrupt-parent = <&hps_0_arm_gic_0>;
+                            interrupts = <0 44 1>;
+                        };
+                        fpgaint5: fpgaint@5 {
+                            compatible = "altr,fpgaint-0.1";
+                            label = "dma_stream_ext";
+			    interrupt-parent = <&hps_0_arm_gic_0>;
+                            interrupts = <0 47 1>;
+                        };
 
 			modular_sgdma_dispatcher_0: unknown@0x1000a1000 {
 				compatible = "unknown,unknown-18.1";
@@ -195,9 +213,15 @@
                         };
                         fpgaint1: fpgaint@1 {
                             compatible = "altr,fpgaint-0.1";
-                            label = "fpgaint1";
+                            label = "dma_mm2s";
 			    interrupt-parent = <&hps_0_arm_gic_0>;
-                            interrupts = <0 41 1>;
+                            interrupts = <0 45 1>;
+                        };
+                        fpgaint2: fpgaint@2 {
+                            compatible = "altr,fpgaint-0.1";
+                            label = "dma_s2mm";
+			    interrupt-parent = <&hps_0_arm_gic_0>;
+                            interrupts = <0 46 1>;
                         };
 			soft_interrupt_0: unknown@0x100000000 {
 				compatible = "fpga_uint,fpga_uinput-1.0";
