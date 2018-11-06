@@ -10,7 +10,7 @@ The 1 GB RAM is divided in two halves: 0-900 MB for linux partition; whilst the 
 Examples realized:
 1. av-stream from custom ip @ 300 Mhz/64-bit -> 300 MHz @ 256-bit -> 100 Mhz @ 256-bit -> Write Master -> mSGDMA Dispatcher -> HPS RAM (0x3900_0000) [Working]
 2. HPS RAM (0x3600_0000) -> Read master -> mSGDMA Dispatcher -> mSGDMA Dispatcher -> Write Master -> HPS_RAM (0x3700_0000) [Problem with mm2s interface]
-3. HPS RAM -> mSGDMA -> mSGDMA -> HPS RAM [Working]
+3. HPS RAM -> mm2st mSGDMA -> st2mm mSGDMA -> HPS RAM [Working]
 
 ref: https://support.criticallink.com/redmine/projects/mityarm-5cs/wiki/writing_to_hps_memory
 
